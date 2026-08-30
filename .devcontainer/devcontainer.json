@@ -1,0 +1,49 @@
+{
+  "name": "cognodb-graph-benchmark",
+  "image": "mcr.microsoft.com/devcontainers/java:17",
+  "features": {
+    // Docker-in-Docker so `docker compose up` works inside the Codespace to
+    // launch Neo4j / Memgraph / ArcadeDB. (The default image also has Docker,
+    // but declaring the feature makes the requirement explicit and pins v2.)
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "dockerDashComposeVersion": "v2",
+      "moby": false
+    },
+    // Ensure a JDK 17 + Maven toolchain is present even if the base image drifts.
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "17",
+      "installMaven": true
+    }
+  },
+
+  // Prefer a 4-core / 16 GB machine: three DB containers plus the JVM harness
+  // are tight on the default 2-core / 8 GB (Neo4j in particular wants ~1 GB to
+  // boot). Codespaces treats this as the default size offered for the repo.
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "16gb",
+    "storage": "32gb"
+  },
+
+  // Auto-forward the DB web UIs (handy but not needed for the benchmark itself,
+  // which connects over localhost inside the container).
+  "forwardPorts": [7474, 2480],
+  "portsAttributes": {
+    "7474": { "label": "Neo4j Browser" },
+    "2480": { "label": "ArcadeDB Studio" }
+  },
+
+  // Make the Maven wrapper executable and warm the build once the container is up.
+  "postCreateCommand": "chmod +x mvnw scripts/*.sh && ./mvnw -q -DskipTests package || true",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}

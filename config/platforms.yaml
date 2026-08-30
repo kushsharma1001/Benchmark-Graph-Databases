@@ -1,0 +1,94 @@
+# ---------------------------------------------------------------------------
+# Platform registry. Each entry describes ONE managed/self-hosted graph
+# database that speaks the Bolt protocol and understands Cypher, so the exact
+# same driver code and the exact same queries run against every one of them.
+#
+# `envPrefix` names the environment variables the harness reads for this
+# platform: <PREFIX>_URI, <PREFIX>_USER, <PREFIX>_PASSWORD. Credentials are
+# NEVER stored here — only the advertised specs, which the README reproduces
+# verbatim for the fairness section.
+#
+# A platform is skipped (not an error) when its URI/PASSWORD env vars are unset,
+# so you can benchmark whatever subset you have accounts for.
+# ---------------------------------------------------------------------------
+platforms:
+  - id: cognodb
+    displayName: "CognoDB Cloud"
+    envPrefix: COGNODB
+    tier: "Free (c0)"
+    engine: "Bolt / Cypher"
+    # Advertised free-tier specs, per the assignment brief.
+    specs:
+      vcpu: "0.5 (burstable)"
+      ram: "256 MB"
+      disk: "1 GB"
+    notes: "Managed. bolt+s:// TLS endpoint. User is 'cognodb'."
+
+  - id: aura-free
+    displayName: "Neo4j Aura Free"
+    envPrefix: AURA
+    tier: "Free (AuraDB Free)"
+    engine: "Bolt / Cypher"
+    specs:
+      vcpu: "shared (not published)"
+      ram: "~1 GB (not published)"
+      disk: "up to 200k nodes / 400k rels (capacity-limited, not disk-sized)"
+    notes: >
+      Aura Free is limited by node/relationship COUNT (200k/400k), not by an
+      advertised vCPU/RAM figure. Keep the dataset under 400k rels to fit it.
+      neo4j+s:// TLS endpoint.
+
+  - id: memgraph-cloud
+    displayName: "Memgraph Cloud"
+    envPrefix: MEMGRAPH_CLOUD
+    tier: "Free trial"
+    engine: "Bolt / Cypher (in-memory)"
+    specs:
+      vcpu: "1 (trial)"
+      ram: "2 GB (trial)"
+      disk: "in-memory + on-disk durability"
+    notes: >
+      In-memory engine; expect strong read latency but memory is the binding
+      constraint. Query dialect is Cypher with minor differences (see caveats).
+
+  - id: local-neo4j
+    displayName: "Neo4j 5 (local Docker, capped)"
+    envPrefix: LOCAL_NEO4J
+    tier: "Self-hosted, capped to free-tier resources"
+    engine: "Bolt / Cypher"
+    # Capped by scripts/local-neo4j.sh to match the CognoDB free tier as closely
+    # as a container allows (--cpus / --memory). This is the target the harness is
+    # validated against end-to-end, so the code path is proven before you spend
+    # cloud quota.
+    specs:
+      vcpu: "0.5 (--cpus=0.5)"
+      ram: "2 GB (--memory=2g; OOM-killed at 256m AND 1g — see README §8)"
+      disk: "container volume (host disk)"
+    notes: "Reference/self-hosted control. Same image everyone can pull."
+
+  - id: local-memgraph
+    displayName: "Memgraph (local Docker, capped)"
+    envPrefix: LOCAL_MEMGRAPH
+    tier: "Self-hosted, capped to free-tier resources"
+    engine: "Bolt / Cypher (in-memory)"
+    specs:
+      vcpu: "0.5 (--cpus=0.5)"
+      ram: "256 MB (--memory=256m)"
+      disk: "in-memory"
+    notes: "In-memory control on port 7688. No auth by default."
+
+  - id: local-arcadedb
+    displayName: "ArcadeDB (local Docker, capped)"
+    envPrefix: LOCAL_ARCADEDB
+    tier: "Self-hosted, capped to free-tier resources"
+    engine: "Bolt / Cypher (multi-model, translated)"
+    specs:
+      vcpu: "0.5 (--cpus=0.5)"
+      ram: "2 GB (--memory=2g; unreliable at 256m — see README §8)"
+      disk: "container volume (host disk)"
+    notes: >
+      Multi-model engine. Bolt is NOT on by default — scripts/local-arcadedb.sh
+      enables the Neo4j-Bolt plugin (com.arcadedb.bolt.BoltProtocolPlugin) on port
+      7689. Cypher is served via a Gremlin/opencypher translation layer, so some DDL
+      (index creation) and query features differ from native Cypher; see caveats.
+      User is 'root'.

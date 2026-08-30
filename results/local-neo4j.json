@@ -1,0 +1,155 @@
+{
+  "platformId" : "local-neo4j",
+  "platformDisplayName" : "Neo4j 5 (local Docker, capped)",
+  "tier" : "Self-hosted, capped to free-tier resources",
+  "engine" : "Bolt / Cypher",
+  "serverInfo" : "Neo4j Kernel 5.26.30 (community)",
+  "specs" : {
+    "vcpu" : "0.5 (--cpus=0.5)",
+    "ram" : "2 GB (--memory=2g; OOM-killed at 256m AND 1g — see README §8)",
+    "disk" : "container volume (host disk)"
+  },
+  "runTimestampUtc" : "2026-08-28T19:54:28.651588074Z",
+  "clientEnvironment" : "JVM 17.0.20.1 on Linux / amd64",
+  "datasetDescription" : "synthetic social graph (seed=42): 30000 nodes, ~150000 relationships",
+  "load" : {
+    "nodes" : 30000,
+    "relationships" : 150000,
+    "wallClockSeconds" : 115.91,
+    "nodesPerSecond" : 258.83,
+    "relationshipsPerSecond" : 1294.15
+  },
+  "traversal" : {
+    "1-hop" : {
+      "count" : 120,
+      "min" : 1.595,
+      "mean" : 26.689,
+      "p50" : 3.305,
+      "p95" : 93.284,
+      "p99" : 96.891,
+      "max" : 96.97,
+      "stddev" : 38.719
+    },
+    "2-hop" : {
+      "count" : 120,
+      "min" : 1.578,
+      "mean" : 34.974,
+      "p50" : 4.197,
+      "p95" : 97.398,
+      "p99" : 101.522,
+      "max" : 104.945,
+      "stddev" : 43.057
+    },
+    "3-hop" : {
+      "count" : 120,
+      "min" : 1.673,
+      "mean" : 23.371,
+      "p50" : 2.964,
+      "p95" : 91.874,
+      "p99" : 95.339,
+      "max" : 99.087,
+      "stddev" : 36.889
+    }
+  },
+  "pointLookup" : {
+    "count" : 120,
+    "min" : 1.353,
+    "mean" : 18.312,
+    "p50" : 1.943,
+    "p95" : 90.285,
+    "p99" : 94.436,
+    "max" : 95.018,
+    "stddev" : 33.649
+  },
+  "indexedLookup" : {
+    "count" : 120,
+    "min" : 1.373,
+    "mean" : 32.422,
+    "p50" : 3.587,
+    "p95" : 96.676,
+    "p99" : 101.983,
+    "max" : 102.94,
+    "stddev" : 42.41
+  },
+  "indexedProperties" : "Person.id (range index)",
+  "aggregation" : {
+    "count" : 120,
+    "min" : 1.045,
+    "mean" : 13.42,
+    "p50" : 1.778,
+    "p95" : 89.373,
+    "p99" : 91.3,
+    "max" : 92.575,
+    "stddev" : 29.527
+  },
+  "aggregationDescription" : "COUNT of all :FOLLOWS relationships",
+  "mixed" : {
+    "1-clients" : {
+      "concurrency" : 1,
+      "readWriteRatio" : 0.9,
+      "durationSeconds" : 20,
+      "totalOps" : 1029,
+      "reads" : 926,
+      "writes" : 103,
+      "errors" : 0,
+      "throughputOpsPerSecond" : 51.45,
+      "latency" : {
+        "count" : 1029,
+        "min" : 1.021,
+        "mean" : 19.436,
+        "p50" : 1.799,
+        "p95" : 92.076,
+        "p99" : 98.111,
+        "max" : 997.529,
+        "stddev" : 50.746
+      }
+    },
+    "10-clients" : {
+      "concurrency" : 10,
+      "readWriteRatio" : 0.9,
+      "durationSeconds" : 20,
+      "totalOps" : 4265,
+      "reads" : 3840,
+      "writes" : 425,
+      "errors" : 0,
+      "throughputOpsPerSecond" : 212.37,
+      "latency" : {
+        "count" : 4265,
+        "min" : 0.951,
+        "mean" : 47.075,
+        "p50" : 10.012,
+        "p95" : 98.689,
+        "p99" : 108.724,
+        "max" : 197.202,
+        "stddev" : 45.096
+      }
+    },
+    "40-clients" : {
+      "concurrency" : 40,
+      "readWriteRatio" : 0.9,
+      "durationSeconds" : 20,
+      "totalOps" : 5646,
+      "reads" : 5073,
+      "writes" : 573,
+      "errors" : 0,
+      "throughputOpsPerSecond" : 279.74,
+      "latency" : {
+        "count" : 5646,
+        "min" : 0.969,
+        "mean" : 142.493,
+        "p50" : 106.688,
+        "p95" : 287.983,
+        "p99" : 585.218,
+        "max" : 709.697,
+        "stddev" : 87.576
+      }
+    }
+  },
+  "footprint" : {
+    "nodesStored" : "30000",
+    "relationshipsStored" : "149890",
+    "storedDataSize" : "not observable from client (see platform console)",
+    "memoryUsage" : "not observable from client (see platform console)"
+  },
+  "caveats" : { }
+}

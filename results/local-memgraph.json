@@ -1,0 +1,155 @@
+{
+  "platformId" : "local-memgraph",
+  "platformDisplayName" : "Memgraph (local Docker, capped)",
+  "tier" : "Self-hosted, capped to free-tier resources",
+  "engine" : "Bolt / Cypher (in-memory)",
+  "serverInfo" : "Memgraph 5.9.0 (community)",
+  "specs" : {
+    "vcpu" : "0.5 (--cpus=0.5)",
+    "ram" : "256 MB (--memory=256m)",
+    "disk" : "in-memory"
+  },
+  "runTimestampUtc" : "2026-08-28T19:58:02.064169471Z",
+  "clientEnvironment" : "JVM 17.0.20.1 on Linux / amd64",
+  "datasetDescription" : "synthetic social graph (seed=42): 30000 nodes, ~150000 relationships",
+  "load" : {
+    "nodes" : 30000,
+    "relationships" : 150000,
+    "wallClockSeconds" : 1.63,
+    "nodesPerSecond" : 18444.48,
+    "relationshipsPerSecond" : 92222.41
+  },
+  "traversal" : {
+    "1-hop" : {
+      "count" : 120,
+      "min" : 0.279,
+      "mean" : 0.655,
+      "p50" : 0.511,
+      "p95" : 1.583,
+      "p99" : 3.37,
+      "max" : 3.995,
+      "stddev" : 0.541
+    },
+    "2-hop" : {
+      "count" : 120,
+      "min" : 0.352,
+      "mean" : 0.639,
+      "p50" : 0.524,
+      "p95" : 0.954,
+      "p99" : 2.968,
+      "max" : 5.231,
+      "stddev" : 0.515
+    },
+    "3-hop" : {
+      "count" : 120,
+      "min" : 0.379,
+      "mean" : 0.753,
+      "p50" : 0.603,
+      "p95" : 1.935,
+      "p99" : 3.48,
+      "max" : 3.48,
+      "stddev" : 0.54
+    }
+  },
+  "pointLookup" : {
+    "count" : 120,
+    "min" : 0.275,
+    "mean" : 0.643,
+    "p50" : 0.523,
+    "p95" : 1.517,
+    "p99" : 3.191,
+    "max" : 3.403,
+    "stddev" : 0.508
+  },
+  "indexedLookup" : {
+    "count" : 120,
+    "min" : 0.343,
+    "mean" : 0.638,
+    "p50" : 0.559,
+    "p95" : 1.586,
+    "p99" : 2.291,
+    "max" : 2.36,
+    "stddev" : 0.355
+  },
+  "indexedProperties" : "Person.id (range index)",
+  "aggregation" : {
+    "count" : 120,
+    "min" : 15.844,
+    "mean" : 34.451,
+    "p50" : 16.949,
+    "p95" : 68.82,
+    "p99" : 75.282,
+    "max" : 97.617,
+    "stddev" : 24.375
+  },
+  "aggregationDescription" : "COUNT of all :FOLLOWS relationships",
+  "mixed" : {
+    "1-clients" : {
+      "concurrency" : 1,
+      "readWriteRatio" : 0.9,
+      "durationSeconds" : 20,
+      "totalOps" : 35782,
+      "reads" : 32132,
+      "writes" : 3650,
+      "errors" : 0,
+      "throughputOpsPerSecond" : 1789.06,
+      "latency" : {
+        "count" : 35782,
+        "min" : 0.234,
+        "mean" : 0.559,
+        "p50" : 0.486,
+        "p95" : 0.749,
+        "p99" : 2.448,
+        "max" : 51.04,
+        "stddev" : 0.721
+      }
+    },
+    "10-clients" : {
+      "concurrency" : 10,
+      "readWriteRatio" : 0.9,
+      "durationSeconds" : 20,
+      "totalOps" : 50951,
+      "reads" : 45825,
+      "writes" : 5126,
+      "errors" : 0,
+      "throughputOpsPerSecond" : 2543.85,
+      "latency" : {
+        "count" : 50951,
+        "min" : 0.294,
+        "mean" : 3.93,
+        "p50" : 1.362,
+        "p95" : 4.259,
+        "p99" : 66.72,
+        "max" : 81.021,
+        "stddev" : 12.088
+      }
+    },
+    "40-clients" : {
+      "concurrency" : 40,
+      "readWriteRatio" : 0.9,
+      "durationSeconds" : 20,
+      "totalOps" : 59411,
+      "reads" : 53526,
+      "writes" : 5885,
+      "errors" : 0,
+      "throughputOpsPerSecond" : 2969.83,
+      "latency" : {
+        "count" : 59411,
+        "min" : 0.395,
+        "mean" : 13.466,
+        "p50" : 4.395,
+        "p95" : 73.289,
+        "p99" : 78.493,
+        "max" : 93.087,
+        "stddev" : 23.05
+      }
+    }
+  },
+  "footprint" : {
+    "nodesStored" : "30000",
+    "relationshipsStored" : "149890",
+    "storedDataSize" : "not observable from client (see platform console)",
+    "memoryUsage" : "not observable from client (see platform console)"
+  },
+  "caveats" : { }
+}

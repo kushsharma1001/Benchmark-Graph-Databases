@@ -1,0 +1,34 @@
+# ---------------------------------------------------------------------------
+# Benchmark parameters — the SAME logical settings applied to every platform.
+# Change here to keep runs consistent and comparable.
+# ---------------------------------------------------------------------------
+
+dataset:
+  # Synthetic social graph (deterministic given the seed) OR a SNAP edge-list
+  # CSV pointed at by `edgeFile`. Sized to fit the smallest free tier.
+  mode: synthetic          # synthetic | csv
+  seed: 42
+  nodes: 30000
+  # Target relationships. 150k > the 100k minimum and < Aura Free's 400k cap.
+  relationships: 150000
+  # Only used when mode: csv. Whitespace/comma-separated "src dst" edge list
+  # (SNAP format). Node ids are integers; loader creates :Person {id}.
+  edgeFile: ""
+
+load:
+  batchSize: 10000         # rows per UNWIND batch (driver-side batching)
+  createIndexes: true
+
+workload:
+  warmupIterations: 30     # discarded before timing
+  measuredIterations: 120  # >= 100 per the brief; percentiles reported
+  # Random start nodes are drawn from ids [0, nodes). Fixed seed => same set
+  # of start nodes on every platform, so the traversal comparison is fair.
+  randomSeed: 7
+  hops: [1, 2, 3]
+
+mixed:
+  # Concurrency sweep for the mixed read/write workload.
+  concurrencyLevels: [1, 10, 40]
+  durationSeconds: 20
+  readWriteRatio: 0.9      # 90% reads, 10% writes

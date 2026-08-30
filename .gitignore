@@ -1,0 +1,30 @@
+# Build output
+target/
+dependency-reduced-pom.xml
+
+# Secrets — NEVER commit connection URIs or passwords. Credentials come from
+# environment variables exported at runtime (see README §4), or an untracked
+# .env file loaded by scripts/run.sh if you choose to create one.
+.env
+*.env
+# If you ever bake real secrets into a local properties file, name it
+# *.local.properties (git-ignored). The committed config/application.properties
+# holds only ${ENV:default} placeholders — never literal secrets.
+*.local.properties
+secrets.properties
+
+# Downloaded / generated datasets can be large — regenerate them from the loader.
+data/
+*.csv.gz
+*.txt.gz
+
+# Benchmark output. The *committed* results live in results/*.json checked in by
+# hand after a real run; scratch output goes to results/raw/ and is ignored.
+results/raw/
+results/*.tmp
+
+# IDE / OS noise
+.idea/
+*.iml
+.vscode/
+.DS_Store

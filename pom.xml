@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ai.wexa</groupId>
+    <artifactId>cognodb-graph-benchmark</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>CognoDB Graph Database Cloud Benchmark</name>
+    <description>A fair, reproducible benchmark harness that compares CognoDB Cloud with other
+        managed Bolt/Cypher graph databases on the same dataset and the same workloads:
+        ingest throughput, 1/2/3-hop traversal latency, point &amp; indexed lookups,
+        aggregations, and a concurrent mixed read/write workload — all reported as
+        percentiles, under matched resource limits.</description>
+
+    <!-- All dependency versions are pinned here so runs are reproducible. -->
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <neo4j.driver.version>5.28.5</neo4j.driver.version>
+        <picocli.version>4.7.6</picocli.version>
+        <jackson.version>2.18.2</jackson.version>
+        <slf4j.version>2.0.16</slf4j.version>
+        <junit.version>5.11.4</junit.version>
+        <testcontainers.version>1.20.4</testcontainers.version>
+        <exec.plugin.version>3.5.0</exec.plugin.version>
+        <shade.plugin.version>3.6.0</shade.plugin.version>
+        <surefire.plugin.version>3.5.2</surefire.plugin.version>
+    </properties>
+
+    <dependencies>
+        <!-- The single official driver used for EVERY platform. CognoDB, Neo4j Aura and
+             Memgraph all speak the Bolt protocol, so one driver + identical Cypher keeps
+             the workloads truly identical across databases (a methodology requirement). -->
+        <dependency>
+            <groupId>org.neo4j.driver</groupId>
+            <artifactId>neo4j-java-driver</artifactId>
+            <version>${neo4j.driver.version}</version>
+        </dependency>
+
+        <!-- Command-line surface: load / bench / report / all subcommands. -->
+        <dependency>
+            <groupId>info.picocli</groupId>
+            <artifactId>picocli</artifactId>
+            <version>${picocli.version}</version>
+        </dependency>
+
+        <!-- Config parsing (platforms.yaml) and results serialization (JSON). -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- The driver logs via SLF4J; provide a simple backend so logs are visible. -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <!-- Testing: unit tests for the statistics + config, and an end-to-end test
+             against a resource-capped Neo4j container via Testcontainers. -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Neo4jContainer lives in its own Testcontainers module. -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>neo4j</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>gdbench</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.plugin.version}</version>
+                <configuration>
+                    <!-- Testcontainers-backed end-to-end test is opt-in (needs Docker):
+                         run it with `-DDOCKER_IT=true`. Unit tests always run. -->
+                    <excludedGroups>docker</excludedGroups>
+                    <groups>${test.groups}</groups>
+                </configuration>
+            </plugin>
+
+            <!-- `./mvnw -q exec:java -Dexec.args="..."` for one-command runs without
+                 building a jar first. The jar (below) is the packaged alternative. -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec.plugin.version}</version>
+                <configuration>
+                    <mainClass>ai.wexa.gdbench.Main</mainClass>
+                </configuration>
+            </plugin>
+
+            <!-- Produces a single runnable fat jar: `java -jar target/gdbench.jar ...`. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${shade.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>shade</goal></goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>ai.wexa.gdbench.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- Default: no extra test groups. Activate the Docker end-to-end test with
+             `-DDOCKER_IT=true`, which flips surefire to include the `docker` group. -->
+        <profile>
+            <id>default-groups</id>
+            <activation><property><name>!DOCKER_IT</name></property></activation>
+            <properties><test.groups></test.groups></properties>
+        </profile>
+        <profile>
+            <id>docker-it</id>
+            <activation><property><name>DOCKER_IT</name></property></activation>
+            <properties><test.groups>docker</test.groups></properties>
+        </profile>
+    </profiles>
+</project>

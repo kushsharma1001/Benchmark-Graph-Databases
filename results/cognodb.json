@@ -1,0 +1,155 @@
+{
+  "platformId" : "cognodb",
+  "platformDisplayName" : "CognoDB Cloud",
+  "tier" : "Free (c0)",
+  "engine" : "Bolt / Cypher",
+  "serverInfo" : "unknown (dbms.components unavailable)",
+  "specs" : {
+    "vcpu" : "0.5 (burstable)",
+    "ram" : "256 MB",
+    "disk" : "1 GB"
+  },
+  "runTimestampUtc" : "2026-08-28T19:38:57.571696096Z",
+  "clientEnvironment" : "JVM 17.0.20.1 on Linux / amd64",
+  "datasetDescription" : "synthetic social graph (seed=42): 30000 nodes, ~150000 relationships",
+  "load" : {
+    "nodes" : 30000,
+    "relationships" : 150000,
+    "wallClockSeconds" : 27.03,
+    "nodesPerSecond" : 1109.99,
+    "relationshipsPerSecond" : 5549.94
+  },
+  "traversal" : {
+    "1-hop" : {
+      "count" : 120,
+      "min" : 201.442,
+      "mean" : 272.408,
+      "p50" : 207.178,
+      "p95" : 414.209,
+      "p99" : 416.306,
+      "max" : 1262.772,
+      "stddev" : 129.155
+    },
+    "2-hop" : {
+      "count" : 120,
+      "min" : 201.322,
+      "mean" : 290.128,
+      "p50" : 206.981,
+      "p95" : 413.255,
+      "p99" : 413.796,
+      "max" : 414.854,
+      "stddev" : 101.109
+    },
+    "3-hop" : {
+      "count" : 120,
+      "min" : 206.114,
+      "mean" : 404.612,
+      "p50" : 411.233,
+      "p95" : 412.654,
+      "p99" : 413.719,
+      "max" : 414.003,
+      "stddev" : 36.652
+    }
+  },
+  "pointLookup" : {
+    "count" : 120,
+    "min" : 201.121,
+    "mean" : 258.77,
+    "p50" : 210.112,
+    "p95" : 420.116,
+    "p99" : 420.755,
+    "max" : 420.956,
+    "stddev" : 89.811
+  },
+  "indexedLookup" : {
+    "count" : 120,
+    "min" : 432.599,
+    "mean" : 434.744,
+    "p50" : 434.289,
+    "p95" : 437.306,
+    "p99" : 441.658,
+    "max" : 445.093,
+    "stddev" : 1.638
+  },
+  "indexedProperties" : "Person.id (range index)",
+  "aggregation" : {
+    "count" : 120,
+    "min" : 517.714,
+    "mean" : 579.181,
+    "p50" : 587.277,
+    "p95" : 607.313,
+    "p99" : 650.902,
+    "max" : 665.553,
+    "stddev" : 28.08
+  },
+  "aggregationDescription" : "COUNT of all :FOLLOWS relationships",
+  "mixed" : {
+    "1-clients" : {
+      "concurrency" : 1,
+      "readWriteRatio" : 0.9,
+      "durationSeconds" : 20,
+      "totalOps" : 83,
+      "reads" : 75,
+      "writes" : 8,
+      "errors" : 0,
+      "throughputOpsPerSecond" : 4.08,
+      "latency" : {
+        "count" : 83,
+        "min" : 201.818,
+        "mean" : 242.751,
+        "p50" : 209.024,
+        "p95" : 419.899,
+        "p99" : 429.108,
+        "max" : 429.108,
+        "stddev" : 78.72
+      }
+    },
+    "10-clients" : {
+      "concurrency" : 10,
+      "readWriteRatio" : 0.9,
+      "durationSeconds" : 20,
+      "totalOps" : 838,
+      "reads" : 757,
+      "writes" : 81,
+      "errors" : 0,
+      "throughputOpsPerSecond" : 41.06,
+      "latency" : {
+        "count" : 838,
+        "min" : 194.726,
+        "mean" : 240.301,
+        "p50" : 204.908,
+        "p95" : 415.479,
+        "p99" : 1044.555,
+        "max" : 1347.565,
+        "stddev" : 138.759
+      }
+    },
+    "40-clients" : {
+      "concurrency" : 40,
+      "readWriteRatio" : 0.9,
+      "durationSeconds" : 20,
+      "totalOps" : 3057,
+      "reads" : 2765,
+      "writes" : 292,
+      "errors" : 0,
+      "throughputOpsPerSecond" : 149.57,
+      "latency" : {
+        "count" : 3057,
+        "min" : 195.129,
+        "mean" : 263.184,
+        "p50" : 243.398,
+        "p95" : 420.179,
+        "p99" : 1019.434,
+        "max" : 1210.587,
+        "stddev" : 105.706
+      }
+    }
+  },
+  "footprint" : {
+    "nodesStored" : "30000",
+    "relationshipsStored" : "149890",
+    "storedDataSize" : "not observable from client (see platform console)",
+    "memoryUsage" : "not observable from client (see platform console)"
+  },
+  "caveats" : { }
+}

@@ -1,0 +1,127 @@
+platform,category,metric,value
+Neo4j Aura Free,load,nodes_per_second,1903.89
+Neo4j Aura Free,load,rels_per_second,9519.43
+Neo4j Aura Free,load,wall_clock_seconds,15.76
+Neo4j Aura Free,traversal,1-hop_p50,111.839
+Neo4j Aura Free,traversal,1-hop_p95,113.504
+Neo4j Aura Free,traversal,2-hop_p50,111.601
+Neo4j Aura Free,traversal,2-hop_p95,113.479
+Neo4j Aura Free,traversal,3-hop_p50,111.51
+Neo4j Aura Free,traversal,3-hop_p95,113.763
+Neo4j Aura Free,lookup,point_p50,111.101
+Neo4j Aura Free,lookup,point_p95,111.748
+Neo4j Aura Free,lookup,indexed_p50,111.195
+Neo4j Aura Free,lookup,indexed_p95,113.474
+Neo4j Aura Free,aggregation,p50,110.87
+Neo4j Aura Free,aggregation,p95,112.215
+Neo4j Aura Free,mixed,1-clients_ops_per_sec,8.86
+Neo4j Aura Free,mixed,1-clients_p95,119.87
+Neo4j Aura Free,mixed,10-clients_ops_per_sec,87.1
+Neo4j Aura Free,mixed,10-clients_p95,120.238
+Neo4j Aura Free,mixed,40-clients_ops_per_sec,341.98
+Neo4j Aura Free,mixed,40-clients_p95,126.728
+CognoDB Cloud,load,nodes_per_second,1109.99
+CognoDB Cloud,load,rels_per_second,5549.94
+CognoDB Cloud,load,wall_clock_seconds,27.03
+CognoDB Cloud,traversal,1-hop_p50,207.178
+CognoDB Cloud,traversal,1-hop_p95,414.209
+CognoDB Cloud,traversal,2-hop_p50,206.981
+CognoDB Cloud,traversal,2-hop_p95,413.255
+CognoDB Cloud,traversal,3-hop_p50,411.233
+CognoDB Cloud,traversal,3-hop_p95,412.654
+CognoDB Cloud,lookup,point_p50,210.112
+CognoDB Cloud,lookup,point_p95,420.116
+CognoDB Cloud,lookup,indexed_p50,434.289
+CognoDB Cloud,lookup,indexed_p95,437.306
+CognoDB Cloud,aggregation,p50,587.277
+CognoDB Cloud,aggregation,p95,607.313
+CognoDB Cloud,mixed,1-clients_ops_per_sec,4.08
+CognoDB Cloud,mixed,1-clients_p95,419.899
+CognoDB Cloud,mixed,10-clients_ops_per_sec,41.06
+CognoDB Cloud,mixed,10-clients_p95,415.479
+CognoDB Cloud,mixed,40-clients_ops_per_sec,149.57
+CognoDB Cloud,mixed,40-clients_p95,420.179
+"ArcadeDB (local Docker, capped)",load,nodes_per_second,646.62
+"ArcadeDB (local Docker, capped)",load,rels_per_second,3233.1
+"ArcadeDB (local Docker, capped)",load,wall_clock_seconds,46.4
+"ArcadeDB (local Docker, capped)",traversal,1-hop_p50,1.441
+"ArcadeDB (local Docker, capped)",traversal,1-hop_p95,60.651
+"ArcadeDB (local Docker, capped)",traversal,2-hop_p50,2.024
+"ArcadeDB (local Docker, capped)",traversal,2-hop_p95,63.4
+"ArcadeDB (local Docker, capped)",traversal,3-hop_p50,1.706
+"ArcadeDB (local Docker, capped)",traversal,3-hop_p95,77.661
+"ArcadeDB (local Docker, capped)",lookup,point_p50,0.74
+"ArcadeDB (local Docker, capped)",lookup,point_p95,1.94
+"ArcadeDB (local Docker, capped)",lookup,indexed_p50,86.597
+"ArcadeDB (local Docker, capped)",lookup,indexed_p95,204.809
+"ArcadeDB (local Docker, capped)",aggregation,p50,492.121
+"ArcadeDB (local Docker, capped)",aggregation,p95,580.653
+"ArcadeDB (local Docker, capped)",mixed,1-clients_ops_per_sec,483.13
+"ArcadeDB (local Docker, capped)",mixed,1-clients_p95,1.728
+"ArcadeDB (local Docker, capped)",mixed,10-clients_ops_per_sec,870.83
+"ArcadeDB (local Docker, capped)",mixed,10-clients_p95,77.687
+"ArcadeDB (local Docker, capped)",mixed,40-clients_ops_per_sec,1359.42
+"ArcadeDB (local Docker, capped)",mixed,40-clients_p95,91.954
+"Memgraph (local Docker, capped)",load,nodes_per_second,18444.48
+"Memgraph (local Docker, capped)",load,rels_per_second,92222.41
+"Memgraph (local Docker, capped)",load,wall_clock_seconds,1.63
+"Memgraph (local Docker, capped)",traversal,1-hop_p50,0.511
+"Memgraph (local Docker, capped)",traversal,1-hop_p95,1.583
+"Memgraph (local Docker, capped)",traversal,2-hop_p50,0.524
+"Memgraph (local Docker, capped)",traversal,2-hop_p95,0.954
+"Memgraph (local Docker, capped)",traversal,3-hop_p50,0.603
+"Memgraph (local Docker, capped)",traversal,3-hop_p95,1.935
+"Memgraph (local Docker, capped)",lookup,point_p50,0.523
+"Memgraph (local Docker, capped)",lookup,point_p95,1.517
+"Memgraph (local Docker, capped)",lookup,indexed_p50,0.559
+"Memgraph (local Docker, capped)",lookup,indexed_p95,1.586
+"Memgraph (local Docker, capped)",aggregation,p50,16.949
+"Memgraph (local Docker, capped)",aggregation,p95,68.82
+"Memgraph (local Docker, capped)",mixed,1-clients_ops_per_sec,1789.06
+"Memgraph (local Docker, capped)",mixed,1-clients_p95,0.749
+"Memgraph (local Docker, capped)",mixed,10-clients_ops_per_sec,2543.85
+"Memgraph (local Docker, capped)",mixed,10-clients_p95,4.259
+"Memgraph (local Docker, capped)",mixed,40-clients_ops_per_sec,2969.83
+"Memgraph (local Docker, capped)",mixed,40-clients_p95,73.289
+"Neo4j 5 (local Docker, capped)",load,nodes_per_second,258.83
+"Neo4j 5 (local Docker, capped)",load,rels_per_second,1294.15
+"Neo4j 5 (local Docker, capped)",load,wall_clock_seconds,115.91
+"Neo4j 5 (local Docker, capped)",traversal,1-hop_p50,3.305
+"Neo4j 5 (local Docker, capped)",traversal,1-hop_p95,93.284
+"Neo4j 5 (local Docker, capped)",traversal,2-hop_p50,4.197
+"Neo4j 5 (local Docker, capped)",traversal,2-hop_p95,97.398
+"Neo4j 5 (local Docker, capped)",traversal,3-hop_p50,2.964
+"Neo4j 5 (local Docker, capped)",traversal,3-hop_p95,91.874
+"Neo4j 5 (local Docker, capped)",lookup,point_p50,1.943
+"Neo4j 5 (local Docker, capped)",lookup,point_p95,90.285
+"Neo4j 5 (local Docker, capped)",lookup,indexed_p50,3.587
+"Neo4j 5 (local Docker, capped)",lookup,indexed_p95,96.676
+"Neo4j 5 (local Docker, capped)",aggregation,p50,1.778
+"Neo4j 5 (local Docker, capped)",aggregation,p95,89.373
+"Neo4j 5 (local Docker, capped)",mixed,1-clients_ops_per_sec,51.45
+"Neo4j 5 (local Docker, capped)",mixed,1-clients_p95,92.076
+"Neo4j 5 (local Docker, capped)",mixed,10-clients_ops_per_sec,212.37
+"Neo4j 5 (local Docker, capped)",mixed,10-clients_p95,98.689
+"Neo4j 5 (local Docker, capped)",mixed,40-clients_ops_per_sec,279.74
+"Neo4j 5 (local Docker, capped)",mixed,40-clients_p95,287.983
+Memgraph Cloud,load,nodes_per_second,2615.81
+Memgraph Cloud,load,rels_per_second,13079.03
+Memgraph Cloud,load,wall_clock_seconds,11.47
+Memgraph Cloud,traversal,1-hop_p50,264.741
+Memgraph Cloud,traversal,1-hop_p95,274.263
+Memgraph Cloud,traversal,2-hop_p50,264.608
+Memgraph Cloud,traversal,2-hop_p95,265.344
+Memgraph Cloud,traversal,3-hop_p50,264.718
+Memgraph Cloud,traversal,3-hop_p95,267.221
+Memgraph Cloud,lookup,point_p50,264.562
+Memgraph Cloud,lookup,point_p95,267.105
+Memgraph Cloud,lookup,indexed_p50,264.629
+Memgraph Cloud,lookup,indexed_p95,265.441
+Memgraph Cloud,aggregation,p50,292.825
+Memgraph Cloud,aggregation,p95,304.877
+Memgraph Cloud,mixed,1-clients_ops_per_sec,4.25
+Memgraph Cloud,mixed,1-clients_p95,265.936
+Memgraph Cloud,mixed,10-clients_ops_per_sec,40.01
+Memgraph Cloud,mixed,10-clients_p95,270.115
+Memgraph Cloud,mixed,40-clients_ops_per_sec,160.9
+Memgraph Cloud,mixed,40-clients_p95,265.157

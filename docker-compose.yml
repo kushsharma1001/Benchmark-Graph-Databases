@@ -1,0 +1,98 @@
+# ---------------------------------------------------------------------------
+# One-command startup for all THREE local (self-hosted control) graph databases
+# the benchmark can target: Neo4j, Memgraph, and ArcadeDB.
+#
+# This is the compose equivalent of running the three scripts/local-*.sh scripts
+# together. The scripts still work standalone; this file just starts them as a
+# set with identical ports, resource caps, and Bolt config so a single
+# `./scripts/run.sh all` can benchmark every local engine in one pass.
+#
+#   docker compose up -d      # start all three, capped, and wait until healthy
+#   ./scripts/run.sh all      # benchmark every reachable DB -> results/RESULTS.md
+#   docker compose down       # stop + remove all three
+#
+# Fairness note: CPU is pinned to 0.5 vCPU everywhere to mirror the CognoDB free
+# tier. RAM differs by engine because the JVM-based engines cannot boot at the
+# 256 MB free-tier footprint:
+#   - Memgraph (C++): 256 MB — starts healthy in ~12s, true free-tier parity.
+#   - Neo4j (JVM):    2 GB   — OOM-killed at BOTH 256m and 1g (died right after
+#                              opening Bolt); only 2g is stable.
+#   - ArcadeDB (JVM): 2 GB   — unreliable at 256m; matched to Neo4j for parity.
+# This RAM asymmetry is a documented RESULT (see README "Caveats"), not hidden.
+#
+# Cloud platforms (CognoDB, Neo4j Aura, Memgraph Cloud) are NOT here — they are
+# always-on hosted endpoints; you only supply their credentials via env / .env.
+#
+# Matching env vars for scripts/run.sh once these are up:
+#   LOCAL_NEO4J_URI=bolt://localhost:7687   LOCAL_NEO4J_USER=neo4j  LOCAL_NEO4J_PASSWORD=benchpassword
+#   LOCAL_MEMGRAPH_URI=bolt://localhost:7688 (no auth)
+#   LOCAL_ARCADEDB_URI=bolt://localhost:7689 LOCAL_ARCADEDB_USER=root LOCAL_ARCADEDB_PASSWORD=benchpassword
+# ---------------------------------------------------------------------------
+services:
+
+  # --- Neo4j: self-hosted control target on 7687 --------------------------
+  neo4j:
+    image: neo4j:5.26-community
+    container_name: gdbench-neo4j
+    cpus: 0.5
+    mem_limit: 2g
+    memswap_limit: 2g
+    ports:
+      - "7687:7687"   # Bolt
+      - "7474:7474"   # HTTP browser
+    environment:
+      NEO4J_AUTH: "neo4j/${LOCAL_NEO4J_PASSWORD:-benchpassword}"
+      # Sized to sit comfortably inside the 2 GB cap with room for JVM overhead.
+      NEO4J_server_memory_heap_initial__size: "512m"
+      NEO4J_server_memory_heap_max__size: "512m"
+      NEO4J_server_memory_pagecache_size: "256m"
+    healthcheck:
+      # cypher-shell ships in the image; a successful RETURN 1 means Bolt is live.
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p ${LOCAL_NEO4J_PASSWORD:-benchpassword} 'RETURN 1;' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 20s
+
+  # --- Memgraph: in-memory control target on 7688 -------------------------
+  memgraph:
+    image: memgraph/memgraph:2.18.1
+    container_name: gdbench-memgraph
+    command: ["--telemetry-enabled=false"]
+    cpus: 0.5
+    mem_limit: 256m
+    memswap_limit: 256m
+    ports:
+      - "7688:7687"   # Bolt (no auth by default)
+    healthcheck:
+      # Ubuntu-based image: bash + /dev/tcp confirm the Bolt port is accepting.
+      test: ["CMD-SHELL", "bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/7687' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 15s
+
+  # --- ArcadeDB: multi-model, Bolt plugin explicitly enabled, on 7689 -----
+  arcadedb:
+    image: arcadedata/arcadedb:latest
+    container_name: gdbench-arcadedb
+    cpus: 0.5
+    mem_limit: 2g
+    memswap_limit: 2g
+    ports:
+      - "7689:7687"   # Bolt (remapped so it coexists with Neo4j/Memgraph)
+      - "2480:2480"   # HTTP studio / API
+    environment:
+      # Bolt is NOT a default ArcadeDB protocol — it must be turned on explicitly,
+      # exactly as local-arcadedb.sh does. Password must be >= 8 chars.
+      JAVA_OPTS: >-
+        -Darcadedb.server.rootPassword=${LOCAL_ARCADEDB_PASSWORD:-benchpassword}
+        -Darcadedb.server.defaultDatabases=${LOCAL_ARCADEDB_DB:-graph}[root]
+        -Darcadedb.server.plugins=Bolt:com.arcadedb.bolt.BoltProtocolPlugin
+    # No healthcheck: the ArcadeDB image ships no `bash` (and its /bin/sh lacks the
+    # /dev/tcp builtin), so a TCP-probe healthcheck always reported a false
+    # "unhealthy" even though Bolt was serving fine ("Listening for incoming BOLT
+    # ... 0.0.0.0:7687"). The benchmark connects over Bolt directly and ignores
+    # Docker health status, so dropping the check is cleaner than a broken one.
+    # Verify readiness manually if needed:
+    #   docker compose logs arcadedb | grep -i "Listening for incoming BOLT"
